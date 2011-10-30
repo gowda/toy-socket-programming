@@ -1,0 +1,14 @@
+a simple toy socket programming application
+
+* server
+  implemented in common lisp (sbcl)
+
+  - dependency
+    closs/port
+
+  - usage
+    compile and load in emacs slime
+
+
+* client
+  implemented in java
