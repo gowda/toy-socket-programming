@@ -1,4 +1,4 @@
-<project name="SClient" basedir="." default="run">
+<project name="ToyClient" basedir="." default="run">
 
   <property name="src.dir" value="src" />
 
@@ -11,7 +11,7 @@
     <fileset dir="${lib.dir}" includes="**/*.jar" />
   </path>
 
-  <property name="main-class" value="SClient" />
+  <property name="main-class" value="ToyClient" />
 
   <target name="clean">
     <delete dir="${build.dir}" />

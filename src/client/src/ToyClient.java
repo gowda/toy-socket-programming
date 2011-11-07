@@ -1,7 +1,7 @@
 import java.io.*;
 import java.net.*;
 
-public class SClient {
+public class ToyClient {
     private static final int DEFAULT_SERVER_PORT = 1025;
     private static final String DEFAULT_SERVER_NAME = "localhost";
 
@@ -9,7 +9,7 @@ public class SClient {
 
     private static PrintStream output;
 
-    public SClient()
+    public ToyClient()
         throws IOException {
         this.s = new Socket ("localhost", 1025);
         this.output = new PrintStream (s.getOutputStream());
@@ -17,7 +17,7 @@ public class SClient {
 
     public static void main (String args[])
     {
-        SClient client;
+        ToyClient client;
         PrintStream output;
 
         /* read from file related */
@@ -27,7 +27,7 @@ public class SClient {
         String line;
 
         try {
-            client = new SClient();
+            client = new ToyClient();
             output = client.output;
 
             /* input related */
