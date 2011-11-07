@@ -32,6 +32,34 @@ public class ToyClient {
         return encoder.encode (CharBuffer.wrap(str));
     }
 
+    private String byteBufferToString (ByteBuffer buffer)
+        throws IOException {
+        String data = null;
+
+        data = decoder.decode(buffer).toString();
+
+        return data;
+    }
+
+    private String receiveString ()
+        throws IOException {
+        ByteBuffer buffer = ByteBuffer.allocate (1024);
+        int ret = 0;
+        String string;
+
+        ret = s.read (buffer);
+
+        buffer.flip();
+
+        if (ret > 0) {
+            string = byteBufferToString (buffer);
+        } else {
+            string = null;
+        }
+
+        return string;
+    }
+
     private int sendString (String str)
         throws IOException {
         ByteBuffer buffer = ByteBuffer.allocate (1024);
@@ -41,8 +69,6 @@ public class ToyClient {
         buffer = stringToByteBuffer (str);
 
         ret = s.write (buffer);
-
-        System.out.print (str);
 
         return ret;
     }
@@ -71,6 +97,8 @@ public class ToyClient {
         BufferedReader inBuffer;
         String line;
 
+        String r_line;
+
         try {
             client = new ToyClient();
 
@@ -81,6 +109,7 @@ public class ToyClient {
 
             while ((line = inBuffer.readLine()) != null) {
                 client.sendString (new String (line + "\n"));
+                r_line = client.receiveString ();
             }
 
             /* input related */
