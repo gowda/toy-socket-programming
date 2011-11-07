@@ -4,11 +4,9 @@
 ;; command-line
 
 (defun record-request (socket query file)
-  (format t "> received request from host ~a~%"
-          (socket-host/port socket))
 
-  ;; (log-for networking "received request from host ~a~%"
-  ;;          (socket-host/port socket))
+  (log-for networking "received request from host ~a~%"
+           (socket-host/port socket))
 
   (if query
       ;; correct request, write to a file
@@ -22,8 +20,7 @@
   "run a server on `port'. `file' is the pathname to the file where output
 must be written"
   (let ((server (open-socket-server port)))
-    (format t "> started server on port ~d~%" port)
-    ;; (log-for networking "started server on port ~d~%" port)
+    (log-for networking "started server on port ~d~%" port)
     (unwind-protect
          (loop
             (let ((socket (socket-accept server)))
