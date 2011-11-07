@@ -19,8 +19,8 @@ public class SClient {
 
             /* input related */
             inStream = new FileInputStream ("/etc/passwd");
-            inData = new DataInputStream (fstream);
-            inBuffer = new BufferedReader (new InputStreamReader (in));
+            inData = new DataInputStream (inStream);
+            inBuffer = new BufferedReader (new InputStreamReader (inData));
 
             while ((line = inBuffer.readLine()) != null) {
                 output.println (line);
@@ -30,7 +30,7 @@ public class SClient {
 
 
             /* input related */
-            in.close();
+            inStream.close();
 
             output.close();
             s.close();

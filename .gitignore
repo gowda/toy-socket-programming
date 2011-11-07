@@ -1,3 +1,4 @@
 *.fasl
 *~
 *.class
+src/client/build
