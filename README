@@ -5,10 +5,23 @@ a simple toy socket programming application
 
   - dependency
     closs/port
+    log5
 
-  - usage
-    compile and load in emacs slime
+  - usage (from src/server directory as current-directory)
+    toy-user@toy-computer$ sbcl --load program.lisp
+
+    or
+
+    toy-user@toy-computer$ emacs
+    [inside emacs]
+    M-x slime
+    [on slime prompt]
+    (load "program")
 
 
 * client
   implemented in java
+
+  - usage
+    toy-user@toy-computer$ cd src/client
+    toy-user@toy-computer$ ant
