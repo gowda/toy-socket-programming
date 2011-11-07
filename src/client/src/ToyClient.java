@@ -1,24 +1,69 @@
 import java.io.*;
+import java.nio.*;
+import java.nio.channels.*;
+import java.nio.charset.*;
 import java.net.*;
 
 public class ToyClient {
     private static final int DEFAULT_SERVER_PORT = 1025;
     private static final String DEFAULT_SERVER_NAME = "localhost";
 
-    private static Socket s;
+    private static SocketChannel s;
 
-    private static PrintStream output;
+    private static CharsetEncoder encoder;
+    private static CharsetDecoder decoder;
+
+    private SocketChannel makeConnection (String name, int port) {
+        SocketChannel s = null;
+
+        try {
+            s = SocketChannel.open();
+            s.connect (new InetSocketAddress (name, port));
+
+        } catch (IOException e) {
+            System.err.println (e);
+        } finally {
+            return s;
+        }
+    }
+
+    private ByteBuffer stringToByteBuffer (String str)
+        throws IOException {
+        return encoder.encode (CharBuffer.wrap(str));
+    }
+
+    private int sendString (String str)
+        throws IOException {
+        ByteBuffer buffer = ByteBuffer.allocate (1024);
+        int ret = 0;
+
+        buffer.clear();
+        buffer = stringToByteBuffer (str);
+
+        ret = s.write (buffer);
+
+        System.out.print (str);
+
+        return ret;
+    }
 
     public ToyClient()
         throws IOException {
-        this.s = new Socket ("localhost", 1025);
-        this.output = new PrintStream (s.getOutputStream());
+
+        Charset charset;
+
+        this.s = makeConnection (DEFAULT_SERVER_NAME,
+                                 DEFAULT_SERVER_PORT);
+
+        charset = Charset.forName ("UTF-8");
+
+        this.encoder = charset.newEncoder();
+        this.decoder = charset.newDecoder();
     }
 
     public static void main (String args[])
     {
         ToyClient client;
-        PrintStream output;
 
         /* read from file related */
         FileInputStream inStream;
@@ -28,7 +73,6 @@ public class ToyClient {
 
         try {
             client = new ToyClient();
-            output = client.output;
 
             /* input related */
             inStream = new FileInputStream ("/etc/passwd");
@@ -36,11 +80,8 @@ public class ToyClient {
             inBuffer = new BufferedReader (new InputStreamReader (inData));
 
             while ((line = inBuffer.readLine()) != null) {
-                output.println (line);
+                client.sendString (new String (line + "\n"));
             }
-
-            output.flush();
-
 
             /* input related */
             inStream.close();
