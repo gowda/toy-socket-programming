@@ -16,6 +16,10 @@
                               :if-does-not-exist :create)
         (format stream "~a~%" query))))
 
+(defun reflect-request (socket query)
+  (if query
+      (write-line query socket)))
+
 (defun toy-server/start (port file)
   "run a server on `port'. `file' is the pathname to the file where output
 must be written"
@@ -30,8 +34,9 @@ must be written"
                        ((null line))
                      (record-request socket
                                      line
-                                     file))
-
+                                     file)
+                     (reflect-request socket
+                                      line))
                 ;; close connection when done
                 (close socket))))
       ;; close server before exiting
