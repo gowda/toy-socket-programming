@@ -2,9 +2,22 @@ import java.io.*;
 import java.net.*;
 
 public class SClient {
+    private static final int DEFAULT_SERVER_PORT = 1025;
+    private static final String DEFAULT_SERVER_NAME = "localhost";
+
+    private static Socket s;
+
+    private static PrintStream output;
+
+    public SClient()
+        throws IOException {
+        this.s = new Socket ("localhost", 1025);
+        this.output = new PrintStream (s.getOutputStream());
+    }
+
     public static void main (String args[])
     {
-        Socket s;
+        SClient client;
         PrintStream output;
 
         /* read from file related */
@@ -14,8 +27,8 @@ public class SClient {
         String line;
 
         try {
-            s = new Socket ("localhost", 1025);
-            output = new PrintStream (s.getOutputStream());
+            client = new SClient();
+            output = client.output;
 
             /* input related */
             inStream = new FileInputStream ("/etc/passwd");
@@ -31,9 +44,6 @@ public class SClient {
 
             /* input related */
             inStream.close();
-
-            output.close();
-            s.close();
 
         } catch (IOException e) {
             System.out.println (e);
